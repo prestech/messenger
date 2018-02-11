@@ -1,0 +1,82 @@
+
+		div{
+   		 /*border: 1px solid red;*/
+		}
+
+		.bdy_div {
+			position: absolute;
+			display: flex;
+			width: 100%;
+			height: 100%;
+			padding: 1%;
+		}/*bdy_div*/
+
+		.side_view{
+			width: 20%;
+			height: 100%%;
+			max-width: 20%;
+			min-width: 15em;
+			margin-right: 2px;
+			padding: 0%;
+		}/*side_view Ends*/
+
+		#messager_frame{
+			position: relative;
+			right: 0;
+			width: 100%;
+			height: 99%;
+			margin-left: 0;
+			background: white;
+		}/*messager_frame Ends*/
+
+		#input_div{
+			position: relative;
+			height: 5%;
+			width: 100%;
+			background: white;
+			border-width: 10%;
+			border-radius: 10%;
+		}/*input_div Ends*/
+
+		#message_view{
+			background: white;
+			position: relative;
+			overflow-y: scroll;
+			height: 90%;
+			width: 100%;
+			margin-bottom: 5px; 
+			border: 20px;
+			border-color: #DFDDDE;
+		}/*message_view Ends*/
+
+		#contact_list{
+			height: 59%;
+		}/*contact_list Ends*/
+
+		.side_nav_sector{
+			height: 35%;
+			background: white;
+			overflow-y: scroll;
+		}/*side_nav_sector Ends*/
+
+		/*Input text area*/
+		#msg_input{
+			text-align: start;
+			width: 100%;
+			height: 100%;
+		}/*msg_input Ends*/
+
+		.contacts > bold{
+			margin-right: 0.5em;
+			margin-left: 0.5em;
+		}/*contacts Ends*/
+
+		
+		.badge{
+			color: red;
+		}/*badge Ends*/
+
+		/*Drop down button*/ 
+		#dropdownMenuButton{
+			background:#996499;
+		}/*dropdownMenuButton End*/

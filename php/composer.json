@@ -1,0 +1,17 @@
+{
+	"autoload":{
+		"psr-4":{
+			"chatServer\\": ""
+		}
+
+
+	},
+    "require": {
+        "cboden/ratchet": "^0.4.1",
+         "react/zmq": "^0.3.0", 
+		"evenement/evenement": "2.0",
+		"react/event-loop": "^0.4.3",
+		"ratchet/pawl": "^0.3.1"
+
+    }
+}
