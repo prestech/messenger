@@ -1,10 +1,9 @@
 <?php
 	session_start();
-
+	$IP_ADDR = "192.168.1.158";
 	if( isset($_SESSION["username"]) == false){
-		echo "<meta http-equiv='refresh' content='0; url=http://192.168.1.158' />";
+		echo "<meta http-equiv='refresh' content='0; url=http://".IP_ADDR."/>";
 	}//if Ends
-
 	require $_SERVER['DOCUMENT_ROOT']."/global_functions.php";
 ?>
 
@@ -70,7 +69,7 @@
 					<a class="dropdown-item" href="#"> Preference </a>
 					<a class="dropdown-item" href="#"> Help </a>
 					<div role="seperator" class="dropdown-divider"></div>
-					<a class="dropdown-item" href="#"> Logout </a>
+					<a class="dropdown-item"  href="#http://192.168.1.158" id="logout_menu"> Logout </a>
 				</div> <!--dropdown menu ends --> 
 
 			</div> <!--Dropdown div Ends -->
@@ -84,14 +83,14 @@
 				 <div id="add_group_popup_modal" class="modal fade" role="dialog">
 				 </div>
 				 <div id="group_notification_popup_modal" class="modal fade" role="dialog"> </div>
-
-
 			</div>
 
 			<!--This will hold a list of user's contacts-->
 			<div class="side_nav_sector" id="contact_list">
 
 				<h4>Contacts <span class="glyphicon glyphicon-plus" id="contact_add_sign" data-toggle="modal" data-target="#add_contact_popup_modal"></span> <span id="contact_notice_bell" class="glyphicon glyphicon-bell" data-toggle="modal" data-target="#contact_notification_popup_modal" ></span> </h4>
+
+				<div id="my_contacts"> </div>
 
 				<!--Modal will be loaded into the div below-->
 				<div id="add_contact_popup_modal" class="modal fade" role="dialog"> </div>
@@ -152,14 +151,14 @@
 
 			//date will be added to the message automatically
 			var message = {request_type:messageType, sender:username, receiver: receiver , content:content, status:status, date:msg_date}; //add date and time 
-
+			message = JSON.stringify(message);
 			return message;
 		}//generateMessage()
 
 
 		/*******************************************************
 		*/
-		function updateMessageView(username, msgTxt){
+		function updateMessageView(username, msgTxt, received = true){
 			var d = new Date();
 
 			var timeNode = d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
@@ -180,10 +179,16 @@
 
 			divNode.appendChild(Hnode);
 			divNode.appendChild(msgTxtNode);
-			divNode.style.background= "#9874AA";
+			divNode.style.color= "#ffffff";
+			divNode.style.background= "#6F256F";
 			divNode.style.marginTop= "2%";
 			//divNode.style.marginRadius= "2%";
 			//divNode.appendChild(hrNode);
+
+			if(received == false){
+				divNode.style.color= "#000000";
+				divNode.style.background= "#f0f0f5";
+			}//if Ends 
 
 			msgView.appendChild(divNode);
 
@@ -285,8 +290,6 @@
 										//remove php exit value (1) from the response string
 										response = response.substr(1,response.length);
 
-										//console.log("successfull"+response);
-
 										//remove the previous search result
 										$("#contact_list div.search_result").empty();
 
@@ -294,28 +297,40 @@
 										$("#contact_list div.search_result").append(response);
 
 										//add the a click event to contact_request_btn
-										$("#contact_list button.contact_request_btn").click( function(){
-											//console.log("Sending request to join");
+										$("#contact_list button.contact_request_btn").each(function(index){
+											
+											var reqBtn = $( "#"+$("#contact_list button.contact_request_btn")[index].id);
 
-											//retreive the username of the potential contact 
-											var potential_contact = $(this).siblings("h3").children()[0].innerText;
+											if(reqBtn.hasClass("glyphicon-ok") == false){
+												reqBtn.click( function(){
 
-											//send an "add_contact" request to the contact
-											var msgContent = myUsername+" wants to add as a contact";
+													console.log("siblings");
+													console.log(this);
+													//retreive the username of the potential contact 
+													var potential_contact = $(this).siblings("h3").children()[0].innerText;
 
-											var contactReqNoticeMsg = generateTxtMessage(ADD_CONTACT_NOTIFICATION,msgContent,myUsername, potential_contact);
+													//send an "add_contact" request to the contact
+													var msgContent = myUsername+" wants to add as a contact";
 
-											console.log("Contact Request: ");
-											console.log(contactReqNoticeMsg);
+													var contactReqNoticeMsg = generateTxtMessage(ADD_CONTACT_NOTIFICATION,msgContent,myUsername, potential_contact);
 
-											//Update the notication table in the database
-											socketWebWorker.postMessage(contactReqNoticeMsg);
+													console.log("Contact Request: ");
+													console.log(contactReqNoticeMsg);
 
-											//write the notification to the database 
-											makeAjaxRequest("POST", ACCOUNT_SERVICE_URL, contactReqNoticeMsg).done(function(response){
-												  console.log(response);
-											   });
+													//Update the notication table in the database
+													socketWebWorker.postMessage(contactReqNoticeMsg);
 
+													//write the notification to the database 
+													makeAjaxRequest("POST", ACCOUNT_SERVICE_URL, JSON.parse(contactReqNoticeMsg)).done(function(response){
+														  console.log(response);
+													   });
+
+													//change the glyphicon from 'plus' to 'ok'
+													reqBtn.removeClass("glyphicon-plus");
+													reqBtn.addClass("glyphicon-ok");
+												});
+											}
+											
 										});//$("#contact_list span.request_btn").onclick() Ends
 										//console.log($("#contact_list button.contact_request_btn"));
 
@@ -342,10 +357,7 @@
 			/***********************************************************************************
 			* This code implements the notification listener for the contact notification UI (the Bell)
 			*/
-				
 			$("#contact_notification_popup_modal").load( "notification_popup.html",function(response, status, jqXhr){
-
-
 				jqXhr.done( function(){
 
 					//check if they are any new notifications (query the database) through an AJAX request
@@ -356,85 +368,79 @@
 
 						//TODO:Do not make unneccessary request. Make requests only when socket recovers from a disconnection (and a startup)  
 						makeAjaxRequest("POST",ACCOUNT_SERVICE_URL, requestNoticeMsg )
-
 						.done( function(response){
 
+						    var jsResponseObj = JSON.parse(response);
 
-					    var jsResponseObj = JSON.parse(response);
+						    //TODO: Only perform this part when data is available 
+						    var oneRequestObj = "";
+						    var htmlResponse = "";
+						    
+						    $("div.notification_div").empty();//clear space before displaying notification
 
-					    console.log(jsResponseObj.length);
-					    //TODO: Only perform this part when data is available 
-					    var oneRequestObj = "";
-					    var htmlResponse = "";
+						    for(var i=0; i < jsResponseObj.length; i++){
 
-					    for(var i=0; i < jsResponseObj.length; i++){
-					    	oneRequestObj = jsResponseObj[i];
-							htmlResponse += '<div style="margin-botton:2%"> <h4><h4> <p>'+ oneRequestObj["description"] +'<button class="accept_contact_btn" name='+i+'> accept </button> <button name='+i+' class="reject_contact_btn"> reject </button> </p> </div>';
+						    	oneRequestObj = jsResponseObj[i];
+						    	
+								htmlResponse += '<div class="request_div" id="'+oneRequestObj["sender"]+'_request_div" style="margin-botton:2%"> <p>'+ oneRequestObj["description"] +'<button class="accept_contact_btn" id="accept_'+oneRequestObj["sender"]+'" name="'+i+' "> accept </button> <button class="reject_contact_btn id="reject_'+oneRequestObj["sender"]+'" name="'+i+'"> reject </button> </p> </div>';
 
-						   }//for Ends 
+								console.log(oneRequestObj);
+								console.log($("#accept_"+oneRequestObj["sender"]));
+								
+							}//for Ends 
 
-						    console.log(htmlResponse);
-							$("div.notification_div").empty();
+						    $("div.notification_div").append(htmlResponse);
 
-							//append the response to the MODAL UI 
-							$("div.notification_div").append(htmlResponse);
 
-							/*register respond listener to each of the notification's content
-							* if the user clicks 'accept':
-							* -send a request to connect the two contact and remove the notification 
-							* -send a feedback notification to the user who sent the request 
-							* 
-							* esle if the user clicks 'reject'
-							* -remove the notification from the database 
-							*/
-							$(".accept_contact_btn").ready(function(){
-								var acceptBtn = $(".accept_contact_btn");
+						    $("button.accept_contact_btn").ready(function(){
 
-								acceptBtn.click(function(){
+						    	//itereate through each button and add a click listener 
+						        $("button.accept_contact_btn").each(function(index){
+						        						        
+							    	$( "#"+$("button.accept_contact_btn")[index].id).click( function(){
 
-									var tagetContactNotice = jsResponseObj[acceptBtn.attr("name")];
+							    		var msg = jsResponseObj[parseInt(this.name)];
 
-									//send add_contact_request to add this contact 
-									console.log(tagetContactNotice);
+							    		//accept the user request (acceptContactRequest() from 'contact_function.js') 
+							    		acceptContactRequest( jsResponseObj[parseInt(this.name)].receiver,
+							    							  jsResponseObj[parseInt(this.name)].sender,
+							    							  msg,
+							    							  socketWebWorker);
 
-									//change the message type to ADD_CONTACT_REQUEST
-									tagetContactNotice.request_type = ADD_CONTACT_REQUEST; 
+							    		$("#"+oneRequestObj["sender"]+"_request_div").remove();//remove notice from UI.
 
-									makeAjaxRequest("POST", ACCOUNT_SERVICE_URL, tagetContactNotice).done(function(response){
-										console.log(response);
-										
-									}).done(function(response){
-										//remove the notification for the UI.
+							    	});
 
-									});//done(function(response) Ends 
+						    	});
 
-									/*TODO: Get feedback of successfull addition of the new contact and let  
-									*this user know that the process was successfull (of print a failure message otherwise)
-									* Also notify the other user (the one who initiated the request) about the updated status 
-									* of the request from the responder (this user).
-		 							*/
-
-								});//acceptBtn.click(function()) Ends 
-
-							})//$("p.accept_contact_btn").click(function(){}) Ends 
-
-						  //}else{
-								//print out "You have no request at this time"
-
-						//}//else if(jsResponseObj > 0 ) Ends 
-
-					  });//done( function(response) Ends 
+						    });// $("button.accept_contact_btn").ready(function()
+						    
+					  }); 
 
 					});//$("#contact_notice_bell").click(function(){}) Ends 
 
 				}); //jqXhr.done( function(){}) Ends 
 					
 			}); //$("#add_group_popup_modal") Ends
-			 
+			
 
+			//********************************************************************
+			//implement the logout functionality 
+			$("#logout_menu").click( function(){
+				console.log("logout");
+				//update online status to 'offline'
+
+	            //check newly added contact online status
+			    //var statusReqMsg = generateTxtMessage(STATUS_REQUEST, "I am going offline", username,"", status=STATUS_OFFLINE);
+	            //updateContactOnlinStatusChange(socketWebWorker, wMessage.sender, statusReqMsg);
+
+			});//$("#logout_menu").click(function() Ends 
 
 		});//$(document).ready(function(){} )Ends 
  
+
+
+		
 
 
 	</script>

@@ -2,7 +2,7 @@
  namespace chatapp\services;
 	
 	define("LOGIN_PAGE" , "index.php");
-	define("SOCK_SERVICE" , "php/service/socket_service.php");
+	define("SIGNUP_PAGE" , "/html/signup.php");
 	define("ACCOUNT_SERVICE" , "php/service/account_setup.php");
 	define("HOME_PAGE" , "html/messenger.php");
 	define("DATA_MODEL" , "php/model/database.php");

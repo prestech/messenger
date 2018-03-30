@@ -42,18 +42,20 @@ class Chat implements MessageComponentInterface {
         // Store the new connection to send messages to later
         echo "New connection ".$conn->resourceId." \n";
         //$this->clients->attach( $conn );
-
     }//onOpen() Ends 
 
     public function onMessage(ConnectionInterface $from, $msg) {
 
-        $numRecv = count($this->clients) - 1;
+        //$numRecv = count($this->clients) - 1;
+        
 
         //change message data from JSON to PHP object 
         $msgObject = json_decode($msg);
 
+		//print_r($msg);
+		
         $content = trim($msgObject->content);
-        $type = trim($msgObject->type);
+        $type = trim($msgObject->request_type);
 
 
         //
@@ -61,14 +63,14 @@ class Chat implements MessageComponentInterface {
 
             $from->connectionID = $msgObject->sender; //add connectionID 
             $from->onlineStatus = $msgObject->status; //add online status 
-            print_r($from->onlineStatus);
+            print_r("Online Status: ".$from->connectionID." ".$from->onlineStatus);
 
             //register client by saving the socket connection
             $this->clients->attach($from);
 
             //send a CHECK_IN_COMPLETE msg 
-            $msgObject->type = CHECK_IN_COMPLETE;
-            echo "Checking completed";
+            $msgObject->request_type = CHECK_IN_COMPLETE;
+            $msgObject->receiver = $msgObject->sender;
 
             $from->send( json_encode($msgObject) );
 
@@ -93,11 +95,11 @@ class Chat implements MessageComponentInterface {
 
             //send automated messages to sender 
             //$autoMsge = array();
-            $msgObject->type = STATUS_UPDATE;
+            $msgObject->request_type = STATUS_UPDATE;
 
             $msgeReceiver = trim($msgObject->receiver);
 
-            $autoMsge->type = STATUS_UPDATE;
+            $autoMsge->request_type = STATUS_UPDATE;
             $autoMsge->sender = $msgeReceiver;
 
             $clientStatusFound = false;
@@ -117,8 +119,8 @@ class Chat implements MessageComponentInterface {
 
                     $autoMsge->status = $client->onlineStatus;
 
-                    echo "\n \n".$msgeReceiver." Onlie Status ".$client->onlineStatus;
-                    $autoMsge->content = "status found";
+                    echo "\n \n".$msgeReceiver." Online Status ".$client->onlineStatus;
+                    $autoMsge->content = "I am here";
 
                     //send message to both parties about their online status 
                     $jsonMsgBack = json_encode($autoMsge);
@@ -144,12 +146,13 @@ class Chat implements MessageComponentInterface {
                 $from->send($jsonMsgBack);
             }// if($clientStatusFound == true) Ends  
            
-       }elseif( (strcmp($type, CONTACT_MESSAGE) == 0) || (strcmp($type, ADD_CONTACT_REQUEST) == 0) ) {
+       }elseif( (strcmp($type, CONTACT_MESSAGE) == 0) || (strcmp($type, ADD_CONTACT_REQUEST) == 0) || 
+       	( strcmp($type, ADD_NEW_CONTACT_TO_VIEW) == 0 )) {
             echo "\n Searching for receiver socket ";
             //check if user is online
             $msgeReceiver = trim($msgObject->receiver);
             
-            //send message to reviever's thread 
+             //send message to reviever's thread 
             foreach ($this->clients as $client) {
                 $sockId = trim($client->connectionID);
 

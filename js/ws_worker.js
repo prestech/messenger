@@ -11,9 +11,9 @@ const  STATUS_OFFLINE = 0;
 const  STATUS_IDLE = 2;
 const  STATUS_BUSY = 3;*/
 //import "http://192.168.1.158/js/message_functions.js";
-var webWorkerUrl = "http://192.168.1.158/js/main_websocket.js"; 
-var jsonContactResource = "http://192.168.1.158/php/service/user/"; 
-
+var webWorkerUrl = "http://"+IP+"/js/main_websocket.js"; 
+var jsonContactResource = "http://"+IP+"/php/service/user/"; 
+var allContacts = null;
 
 function startWebSocketWorker(username){
 
@@ -57,7 +57,7 @@ function checkIn(worker){
 	console.log("ws_worker.js/checkIn: Checking in with server");
 
 	var checkInMsg = generateTxtMessage(CHECK_IN_USER, msgTxt, username,"", status=STATUS_ONLINE);
-
+	console.log("ws_worker.js/checkIn():"+checkInMsg);
 	worker.postMessage(checkInMsg);
 
 }//checkIn() Ends 
@@ -69,11 +69,10 @@ function checkIn(worker){
 function handleWsWorkerMessage(eventData, username){
 
    var wMessage = JSON.parse(eventData);
-				   
-   console.log("ws_worker/handleWsWorkerMessage(): "+wMessage);
+   console.log("ws_worker/handleWsWorkerMessage(): "+wMessage.request_type);
 				   
 	//check the message type and react accordingly
-	switch(wMessage.type){
+	switch(wMessage.request_type){
 
 		//case this is an incomming message from a contact
 		case CONTACT_MESSAGE:
@@ -86,9 +85,9 @@ function handleWsWorkerMessage(eventData, username){
 
 		//case this  is a (\an online) status update message  
 		case STATUS_UPDATE:
-			//update the onine status of the targe user(s)
-			updateContactOnlinStatusChange(wMessage.sender, wMessage.status);
+			//update the onine status of the target user(s)
 			console.log("ws_worker.js/handleWsWorkerMessage()-STATUS_UPDATE: Contact's status  have been update back");
+			updateContactOnlinStatusChange(wMessage.sender, wMessage.status);
 			break;
 
 		//STATUS_REQUEST will only be sent and not received
@@ -107,7 +106,9 @@ function handleWsWorkerMessage(eventData, username){
 			done(  function(response){
 				addContactsToView(response);
 			}).
-			then( function(){
+			
+			then( function(contacts){
+				    allContacts = contacts;
 					checkIn(socketWebWorker);
 				});//function(){} Ends
 
@@ -115,12 +116,12 @@ function handleWsWorkerMessage(eventData, username){
 
 		case CHECK_IN_COMPLETE:
 			
+			console.log("ws_worker.js/handleWsWorkerMessage()-CHECK_IN_COMPLETE: "+allContacts);
 			var statusReqMsg = generateTxtMessage(STATUS_REQUEST, "are you online?", username,"", status=STATUS_ONLINE);
-			console.log("ws_worker.js/handleWsWorkerMessage()-CHECK_IN_COMPLETE:  Checkin completed "+allContacts);
 			updateOnlineStatus(socketWebWorker, allContacts, statusReqMsg);
 			break;
 			//Case the websocket cannot reach the server
-			case NETWORK_UNREACHABLE:
+		case NETWORK_UNREACHABLE:
 
 			break;
 
@@ -128,13 +129,25 @@ function handleWsWorkerMessage(eventData, username){
 
 	    	//show as notification in the "contact" list heading 
 	    	console.log("contact request received");
-	    	console.log($("#contact_notice_bell"));
+	    	//console.log($("#contact_notice_bell"));
 	    	
 	    	contact_notice_count = contact_notice_count+1;
 
 	    	$("#contact_notice_bell")[0].textContent = ""+contact_notice_count;
-
 	     	break; 
+
+	    case ADD_NEW_CONTACT_TO_VIEW:
+	    
+	    	 console.log("ADD_NEW_CONTACT_TO_VIEW");
+	         console.log(wMessage);
+	         //add contact to view 
+	         addSingleContactToView(wMessage.sender);
+
+	         //check newly added contact online status
+			 var statusReqMsg = generateTxtMessage(STATUS_REQUEST, "are you online?", username,"", status=STATUS_ONLINE);
+	         updateOnlineStatusForSingleContact(socketWebWorker, wMessage.sender, statusReqMsg);
+
+	         break; 
 	}//swich() Ends 
 
 	//console.log(event.data);

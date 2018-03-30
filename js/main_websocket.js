@@ -37,7 +37,7 @@
 
 				if(conn.readyState == 1){
 					//IMPORTANT: If a user attempts to connect and does not send a status update message, reject it.
-					 var message = { type:CHECK_IN_USER};
+					 var message = { request_type:CHECK_IN_USER};
 					 console.log("ws_worker.js/conn.onopen: Socket connected "+conn.readyState);
 
 					 //let the the main thread know socket is ready
@@ -50,6 +50,7 @@
 			conn.onmessage = function(event){
 				//send message to the main thread 
 				console.log("main_websocket.js/onmessage: Message received from Server");
+				
 				postMessage(event.data); 
 
 				//socket will be signalled to terminate

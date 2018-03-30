@@ -22,10 +22,7 @@
    function validateClientUser($username, $password){
 
 		//connect to database 
-		$conn = model\Database::connectToDb(); 
-
-		//TODO:Catch exceptional case were the QUERY fails 
-		//$querryStmt = "SELECT username, password FROM users;";  
+		$conn = model\Database::connectToDb();   
 
 		//TODO: Write a client side script with javascript and a
 		// server side script to validate the format of the input 

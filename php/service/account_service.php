@@ -10,23 +10,23 @@
 	use chatapp\model\Database; 
 
 	//check if there is an incomming query string 
-	//if( isset($_POST['type']) == false){return NULL;}
 	$requestType = $_POST["request_type"];
 
 	//Service request
 	define("SEARCH_USERS","search_users");
 	define("REQUEST_CONTACTS_LIST","request_contacts_list");
 	define("LOAD_MESSAGES","load_messages");
-
+	define("REQUEST_MESSAGE", "request_messages");
+	define("PERSIST_MESSAGE","store_message");
 	define("ADD_CONTACT_REQUEST","add_contact_request");
 	define("JOIN_GROUP_REQUEST","join_group_request");
 
 	//data types that will be persist
 	define("NEW_CONTACT_DATA","new_contact");
-	define("PERSIST_MESSAGE","store_message");
 	define('REQUEST_NOTIFICATION', "request_notification");
 	define('ADD_CONTACT_NOTIFICATION', 'add_contact_notification');
 	
+
 	//define("JOIN_GROUP_REQUEST","join_group_request");
 
 
@@ -34,19 +34,22 @@
 	//echo "string";
 	//echo $searchString;
 	
-  function searchContacts($searchString){
-		    
-		$queryStmt = "SELECT * FROM users WHERE (username LIKE'$searchString%' OR lastName LIKE '$searchString%' OR firstName LIKE '$searchString%')"; 
-	
-		$resultSet = Database::queryDb($queryStmt);
+  function searchContacts($searchString, $acctUsername){
 
-		echo ($resultSet != NULL);
+	
+	   $contactQueryStmt = "SELECT * FROM users WHERE  (users.username IN (SELECT contacts.username FROM contacts WHERE contacts.username = '$acctUsername' OR contacts.contact = '$acctUsername') OR users.username IN (SELECT contacts.contact FROM contacts WHERE contacts.username = '$acctUsername' OR contacts.contact = '$acctUsername')) AND (users.username LIKE'$searchString%' OR users.lastName LIKE '$searchString%' OR users.firstName LIKE '$searchString%')";
+
+	   $nonContactQueryStmt = "SELECT * FROM users WHERE  (users.username NOT IN (SELECT contacts.username FROM contacts WHERE contacts.username = '$acctUsername' OR contacts.contact = '$acctUsername') AND users.username NOT IN (SELECT contacts.contact FROM contacts WHERE contacts.username = '$acctUsername' OR contacts.contact = '$acctUsername')) AND (users.username LIKE'$searchString%' OR users.lastName LIKE '$searchString%' OR users.firstName LIKE '$searchString%')";
+
+		$contactResultSet = Database::queryDb($contactQueryStmt);
+		$nonContactResultSet = Database::queryDb($nonContactQueryStmt);
+
 		//change query into JSON format
-		if($resultSet != NULL){
+		if($contactResultSet != NULL){
 			$contacts = array();
 			$index = 0;
-			$queryResult="";
-			foreach ($resultSet as $rows) {
+			$queryResult=" ";
+			foreach ($contactResultSet as $rows) {
 
 				$contacts[$index] = $rows;
 
@@ -59,18 +62,37 @@
                 
                 <h3 style="align-self: center;" class="first_last_name"><span class="username">'.$rows['username'].'</span> <br>'.$rows['firstName'].' '.$rows['lastName'].'</h3>
 
-                <button class="contact_request_btn btn btn-sm btn-info glyphicon glyphicon-plus" style="position:relative; margin-left: 20em; align-self: center; background: green; height: 2%"></button>
+                <button id="'.$rows['username'].'_remove" class="contact_request_btn btn btn-sm btn-info glyphicon glyphicon-ok" style="position:relative; margin-left: 20em; align-self: center; background: green; height:3%"></button>
              </div>';
 
 			}//foreach Ends 
-
-			//$jsonContacts = json_encode($contacts);
-
-			exit($queryResult);
-
-		}else{
-			return "";
 		}  
+
+
+		//change query into JSON format
+		if($nonContactResultSet != NULL){
+			$contacts = array();
+			$index = 0;
+			foreach ($nonContactResultSet as $rows) {
+				$contacts[$index] = $rows;
+
+				$index = $index + 1;
+
+				$queryResult.='<!--Div to hold contact information -->  
+		           <div class="" style="display: flex; align-content: center; margin-top:2%">
+		           <img  class="user_img rounded float-left" src="http://santetotal.com/wp-content/uploads/2014/05/default-user-36x36.png" style="height: 4em; align-self: center;">
+		                
+		           <h3 style="align-self: center;" class="first_last_name"><span class="username">'.$rows['username'].'</span> <br>'.$rows['firstName'].' '.$rows['lastName'].'</h3>
+
+		           <button id="'.$rows['username'].'_req" class="contact_request_btn btn btn-sm btn-info glyphicon glyphicon-plus" style="position:relative; margin-left: 20em; align-self: center; background: green; height:3%"></button>
+		           </div>';
+
+				}//foreach Ends 
+
+		}  
+
+		exit($queryResult);
+
 	}//searchContacts() Ends 
 
 	
@@ -196,6 +218,7 @@ function persistMessage($dataObject){
 
 }//persistMessage() Ends 
 
+
 function loadUserMessage($dataObject){
 		
   		//this notification might target a group of users or just a single user. So it is necessary to have a boolean that indicates so. 
@@ -214,7 +237,7 @@ switch ($requestType) {
 	case SEARCH_USERS:
 		//retreive the search string 
 		$searchString = $_POST['search_string'];
-		searchContacts($searchString);
+		searchContacts($searchString, $_SESSION["username"]);
 		break;
 
 	case REQUEST_CONTACTS_LIST:
@@ -234,13 +257,21 @@ switch ($requestType) {
 		break;
 	case ADD_CONTACT_NOTIFICATION:
 		saveUserNotification($_POST);
+	    //print_r("ADD_CONTACT_NOTIFICATION:".ADD_CONTACT_NOTIFICATION);
 		# code...
 		break;
 	case JOIN_GROUP_REQUEST:
 		//loadGroupNotification($_POST);
+		echo("Winner");
 		break;
 
 	case PERSIST_MESSAGE:
+
+		echo("Winner");
+		break;
+
+	case REQUEST_MESSAGE:
+		echo("Winner");
 		break;
 }//switch Case Ends 
 	

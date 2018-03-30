@@ -17,8 +17,10 @@
 	<!-- Specify required php scrips-->
 	<?php
 		#require $_SERVER['DOCUMENT_ROOT']."/env_params/php_path_constants.php";
-		$login_script = $_SERVER['DOCUMENT_ROOT']."model/php/model/login_service.php";
-		
+		$login_script = $_SERVER['DOCUMENT_ROOT'].'/html/signup_service.php';
+	
+		 
+
 		//print_r($login_script);
 		//By removing session variable, user will be forced to sign in with the username and password
 		//remove session variable
@@ -36,14 +38,14 @@
 			background: red;
 			display: flex;   
 		}
-		#login_div{
+		#signup_div{
 			position: relative;
 			background: #DFDDDE;
 			padding: 5% 1% 5% 1%;
 			margin-top: 10%;
 			height: 60%;
 			width: 60%;
-			max-height: 550px;
+			max-height: 750px;
 			max-width: 450px;			
 		}
 
@@ -66,14 +68,29 @@
 
 <body>
 <!--LOGIN INPUT -->
-	<div class="container" id=login_div>
+	<div class="container" id=signup_div>
 				
 		<div id="form_div">
-		   <form class="form-horizontal" id="login_form" action = '<?php echo "/php/service/login_service.php" ?>' method="POST">
+
+		   <form class="form-horizontal" id="login_form" action = '<?php echo "/php/service/signup_service.php" ?>' method="POST">
 				
+				 <div>
+					<label for="first_name"> First Name </label>
+					<input class="form-control" type="text" name="first_name" id="first_name" required>
+				</div>
+				
+				 <div>
+					<label for="last_name"> Last Name </label>
+					<input class="form-control" type="text" name="last_name" id="last_name" required>
+				</div>
+				
+				 <div>
+					<label for="email"> Email </label>
+					<input class="form-control" type="email" name="email" id="email" required>
+				</div>
 
 				<div>
-					<label for="username"> Username: </label>
+					<label for="username"> Username </label>
 					<input class="form-control" type="text" name="username" id="username" required>
 				</div>
 
@@ -82,25 +99,41 @@
 					<input class="form-control" type="password" name="password" id="password" required>
 				</div>
 
-				<div class="checkbox">
-					<label for="checkbox">
-					<input type="checkbox" name="checkbox" id="checkbox" > 
-					Remember me</label>
+				<div>
+					<label for="re-password">Re-password</label>
+					<input class="form-control" type="password" name="re_password" id="re_password" required>
+				</div>
 
+
+				<div>
+					<input class="btn btn-primary btn-block" value="register" type="submit" name="submit" id="register_btn" style="background:#6F256F">
 				</div>
 
 				<div>
-					<input class="btn btn-primary btn-block" value="login" type="submit" style="background:#6F256F">
-
+					<input class="btn btn-primary btn-block" value="cancel" type="button" id="cancel_btn" style="background:#6F256F">
 				</div>
-		
-
-			<!--link to signup page --> 
-			<div>Don't have an account? <a href="<?php echo "/html//signup.php"  ?>">create account</a>
-			</div>
-
+			
 		</form>	
+
+			<div>
+				<p id="feedback_tag"></p>
+			</div>
 	 </div>
   </div>
+
+  <script type="text/javascript">
+  	$(document).ready(function(){
+
+  		$("#cancel_btn").click(function(){
+  			 window.location.href = "http://192.168.1.158/";
+  	
+  		});
+
+  	});//$(document).ready(function()) Ends 
+
+  </script>
+
 </body>
+
+
 </html>
