@@ -12,8 +12,9 @@ This is a client-server messenger web browser application that allows users to r
 ![alt text](https://github.com/prestech/messenger/blob/master/docs/snapshot/messenger.jpg "Description goes here")
 
 ### Snapshot 3.1 Sending contact request 
-![alt text](https://github.com/prestech/messenger/blob/master/docs/snapshot/contact_request.mp4 "Description goes here")
-
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=YOUTUBE_VIDEO_ID_HERE
+" target="_blank"><img src="http://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg" 
+alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
 ### Snapshot 3.2 Accepting contact request 
 
 The server side application "chatServer.php" is implemented using a third party socket API know as Ratchet. For users to send and recieve messages, the server side application must be up and running.  
