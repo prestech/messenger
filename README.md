@@ -12,7 +12,7 @@ To start the meesenger sever application cd (change directory) into /php and run
 ### Snapshot 2.0 Signup and login 
 ![alt text](https://github.com/prestech/messenger/blob/master/docs/snapshot/login.gif "Description goes here")
 
-### Snapshot 2.1 Sending and accept contact request 
+### Snapshot 2.1 Send and accept contact request 
 ![alt text](https://github.com/prestech/messenger/blob/master/docs/snapshot/contact_request.gif "Description goes here")
 
 ### Snapshot 2.2 Send and receive maessages
