@@ -3,6 +3,8 @@
 This is a client-server messenger web browser application that allows users to register and account, send "contact" request to other users, accept "contact" request to other users and ultimately chat with their contacts. The server side is implement in php while the client side is implemented in javascript, html, and css. 
 
 ### Snapshot 1.0 Signup page 
+![alt text](snapshot/signup_page.png "Description goes here")
+
 ### Snapshot 2.0 Login page 
 ### Snapshot 3.0 Messenger page 
 ### Snapshot 3.1 Sending contact request 
