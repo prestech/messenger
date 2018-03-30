@@ -7,6 +7,9 @@
 	define("HOME_PAGE" , "html/messenger.php");
 	define("DATA_MODEL" , "php/model/database.php");
 	define("USER_FOLDER" , "user/");
+
+	define("IP_ADDR" , "192.168.1.158");
+
 	define("ONLINE_IMG" , "images/online.jpg");
 	define("OFFLINE_IMG" , "images/offline.png");
 	define("BUSY_IMG" , "images/busy.jpg");
