@@ -8,4 +8,4 @@ This is a client-server messenger web browser application that allows users to r
 ### Snapshot 3.1 Sending contact request 
 ### Snapshot 3.2 Accepting contact request 
 
-The server side application "chatServer.php" is implemented using a third party socket API know as Ratchet. For users to send and recieve messages, the server side application must be running.  
+The server side application "chatServer.php" is implemented using a third party socket API know as Ratchet. For users to send and recieve messages, the server side application must be up and running.  
