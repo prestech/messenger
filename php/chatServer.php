@@ -7,6 +7,7 @@ require "global_functions.php";
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 
+echo ("Messenger server is running\n");
 /*
 TODO::
 retrieve username and check, via a background worker thread, 
