@@ -74,19 +74,7 @@ class Chat implements MessageComponentInterface {
 
             $from->send( json_encode($msgObject) );
 
-        }//if Ends 
-
-        elseif( strcmp( $type, STATUS_UPDATE)== 0) {
-
-              //update user's online status and inform the user's contact
-              //about this status change 
-
-        	  $from->onlineStatus = $msgObject->status; //add online status 
-
-        	  //update the user's contacts about the change in the user's status. 
-        	  
-        }//if Ends 
-
+        }
         elseif ( strcmp( $type, STATUS_REQUEST) == 0 ) {            
             
             //update contact with user's (sender's) status and alse retreive contacts' online status.
@@ -147,7 +135,7 @@ class Chat implements MessageComponentInterface {
             }// if($clientStatusFound == true) Ends  
            
        }elseif( (strcmp($type, CONTACT_MESSAGE) == 0) || (strcmp($type, ADD_CONTACT_REQUEST) == 0) || 
-       	( strcmp($type, ADD_NEW_CONTACT_TO_VIEW) == 0 )) {
+       	( strcmp($type, ADD_NEW_CONTACT_TO_VIEW) == 0 ) || (strcmp( $type, STATUS_UPDATE)== 0) ) {
             echo "\n Searching for receiver socket ";
             //check if user is online
             $msgeReceiver = trim($msgObject->receiver);

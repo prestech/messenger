@@ -79,7 +79,6 @@ function handleWsWorkerMessage(eventData, username){
 		case CONTACT_MESSAGE:
 
 			console.log("ws_worker.js/handleWsWorkerMessage()-CONTACT_MESSAGE: you have a new message");
-
 			//retreive the message content and call the "receive()" fucntion on the message  
 			receiveMessage(wMessage);
 			break;

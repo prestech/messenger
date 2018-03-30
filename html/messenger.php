@@ -44,7 +44,7 @@
 	<link rel="Import" type="text/html" href="<?php echo('http://'.IP_ADDR.'/html/add_user_group_popup.html') ?>">
 
 	<script src="<?php echo('http://'.IP_ADDR.'/js/global_constants.js') ?>"></script>
-	
+
 	<script type="text/javascript">
 		var contact_notice_count = 0; 
 	</script>
@@ -429,11 +429,27 @@
 			//implement the logout functionality 
 			$("#logout_menu").click( function(){
 				console.log("logout");
-				//update online status to 'offline'
+				var myContacts = []; //declare and array
 
-	            //check newly added contact online status
-			    //var statusReqMsg = generateTxtMessage(STATUS_REQUEST, "I am going offline", username,"", status=STATUS_OFFLINE);
-	            //updateContactOnlinStatusChange(socketWebWorker, wMessage.sender, statusReqMsg);
+				//update online status to 'offline'
+				$("bold.contact_name").each(function(index){
+					myContacts[index] = $("bold.contact_name")[index].id;
+
+					var statusReqMsg = generateTxtMessage(STATUS_UPDATE, "going offline", username, myContacts[index] , status=STATUS_OFFLINE);
+					console.log(statusReqMsg);
+
+					var myContactsToJson = JSON.stringify(myContacts[index]);
+
+					//send status update message
+					socketWebWorker.postMessage(statusReqMsg);
+
+					//go to the index (login) page
+					window.location.href = "http://"+'<?php echo(IP_ADDR); ?>'; 
+
+				});//$("bold.contact_name") Ends 
+
+				
+	   
 
 			});//$("#logout_menu").click(function() Ends 
 

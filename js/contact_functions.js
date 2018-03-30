@@ -58,7 +58,6 @@
 				console.log(contacts[i].username);
 				//request for contacts' status 
 				socketThread.postMessage( JSON.stringify(messageObj) );
-
 				//console.log("contact_function.js: "+JSON.stringify(messageObj));
 
 			}//for Ends
