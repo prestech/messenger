@@ -1,4 +1,6 @@
 const IP = "192.168.1.158";
+const SERVER_PORT = "5555";
+const SERVER_ADDR = "ws://"+IP+":"+SERVER_PORT;
 
 const STATUS_REQUEST = "update_request";
 const STATUS_UPDATE = "status_update";

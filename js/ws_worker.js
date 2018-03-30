@@ -10,7 +10,8 @@ const  STATUS_ONLINE = 1;
 const  STATUS_OFFLINE = 0;
 const  STATUS_IDLE = 2;
 const  STATUS_BUSY = 3;*/
-//import "http://192.168.1.158/js/message_functions.js";
+//import "http://"+IP+"/js/global_constants.js";
+
 var webWorkerUrl = "http://"+IP+"/js/main_websocket.js"; 
 var jsonContactResource = "http://"+IP+"/php/service/user/"; 
 var allContacts = null;

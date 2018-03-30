@@ -6,6 +6,7 @@
 		const CONTACT_MESSAGE = "contact_message";
 		const NETWORK_UNREACHABLE = "network_unreachable";
 		const CHECK_IN_USER = "check_in_user";
+		const SERVER_ADDR = 'ws://192.168.1.158:5555';
 
 		/*
 		*TODO: Authenticates users who connect to sockets. Whe the connection is first established send an automated message to the 
@@ -29,7 +30,7 @@
 		function connectToMessenger(){
 			
 			//$protocol = "username&socketID";
-			var conn = new WebSocket('ws://192.168.1.158:5555');
+			var conn = new WebSocket(SERVER_ADDR);
 			console.log("Initiating socket connection ");
 
 			conn.onopen = function(e){

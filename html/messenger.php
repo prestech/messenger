@@ -1,10 +1,11 @@
 <?php
 	session_start();
-	$IP_ADDR = "192.168.1.158";
+	require $_SERVER['DOCUMENT_ROOT']."/global_functions.php";
+
 	if( isset($_SESSION["username"]) == false){
 		echo "<meta http-equiv='refresh' content='0; url=http://".IP_ADDR."/>";
 	}//if Ends
-	require $_SERVER['DOCUMENT_ROOT']."/global_functions.php";
+	
 ?>
 
 <!DOCTYPE html>
@@ -16,7 +17,7 @@
 	<title>Messenger</title>
 
 	<!--LOCAL CSS-->
-	<link rel="stylesheet" type="text/css" href="http://192.168.1.158/css/messenger.css">
+	<link rel="stylesheet" type="text/css" href= "<?php echo('http://'.IP_ADDR.'/css/messenger.css') ?>" >
 
 	<!--BOOTSTRAP-->
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -38,12 +39,13 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
+
 	<!--Import HTML modules from another folder -->
-	<link rel="Import" type="text/html" href="http://192.168.1.158/js/add_user_group_popup.html">
+	<link rel="Import" type="text/html" href="<?php echo('http://'.IP_ADDR.'/html/add_user_group_popup.html') ?>">
 
-
+	<script src="<?php echo('http://'.IP_ADDR.'/js/global_constants.js') ?>"></script>
+	
 	<script type="text/javascript">
-		var myUsername = '<?php echo $_SESSION["username"] ?>';
 		var contact_notice_count = 0; 
 	</script>
 </head> <!--Html body ends -->
@@ -127,11 +129,10 @@
 
 	</div><!--div class="bdy_div" Ends -->
 
-
-	<script src="http://192.168.1.158/js/message_functions.js"> </script>
-	<script src="http://192.168.1.158/js/contact_functions.js"></script>
-	<script src="http://192.168.1.158/js/global_constants.js"></script>
-	<script src="http://192.168.1.158/js/ws_worker.js"></script>
+	
+	<script src="<?php echo('http://'.IP_ADDR.'/js/message_functions.js') ?>"> </script>
+	<script src="<?php echo('http://'.IP_ADDR.'/js/contact_functions.js') ?>"></script>
+	<script src="<?php echo('http://'.IP_ADDR.'/js/ws_worker.js') ?>"></script>
 
 
 	<!--call and run script function within this script tag below-->
@@ -310,9 +311,9 @@
 													var potential_contact = $(this).siblings("h3").children()[0].innerText;
 
 													//send an "add_contact" request to the contact
-													var msgContent = myUsername+" wants to add as a contact";
+													var msgContent = username+" wants to add as a contact";
 
-													var contactReqNoticeMsg = generateTxtMessage(ADD_CONTACT_NOTIFICATION,msgContent,myUsername, potential_contact);
+													var contactReqNoticeMsg = generateTxtMessage(ADD_CONTACT_NOTIFICATION,msgContent,username, potential_contact);
 
 													console.log("Contact Request: ");
 													console.log(contactReqNoticeMsg);
