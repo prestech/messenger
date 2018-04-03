@@ -11,16 +11,16 @@ To start the meesenger sever application cd (change directory) into /php and run
 ![alt text](https://github.com/prestech/messenger/blob/master/docs/snapshot/server.gif "Description goes here")
 
 
-### Snapshot 2.0 Signup and login 
+### GIF 2.0 Signup and login 
 ![alt text](https://github.com/prestech/messenger/blob/master/docs/snapshot/login.gif "Description goes here")
 
-### Snapshot 2.1 Send and accept contact request 
+### GIF 2.1 Send and accept contact request 
 ![alt text](https://github.com/prestech/messenger/blob/master/docs/snapshot/contact_request.gif "Description goes here")
 
-### Snapshot 2.2 Send and receive maessages
+### GIF 2.2 Send and receive maessages
 ![alt text](https://github.com/prestech/messenger/blob/master/docs/snapshot/messaging.gif "Description goes here")
 
-### Snapshot 2.3 Logout from messenger
+### GIF 2.3 Logout from messenger
 ![alt text](https://github.com/prestech/messenger/blob/master/docs/snapshot/signout.gif "Description goes here")
 
  
