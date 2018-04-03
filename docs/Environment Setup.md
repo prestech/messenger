@@ -2,21 +2,21 @@
 
 ### Download and Install a WAMP or LAMP Stack Server
 
-The WAMP (or LAMP) stack provides the Http Apache and MSQL database Servers on PHP, needed to host the web page and back-end data store, respectively. For windows users click [WAMP](http://www.wampserver.com/en/), or [LAMP](https://bitnami.com/stack/lamp) for Linux users, to download and install.
+The WAMP (or LAMP) stack provides the Http Apache and MSQL database Servers on PHP, needed to host the web page and back-end data store, respectively. For windows users click [WAMP](http://www.wampserver.com/en/), and [LAMP](https://bitnami.com/stack/lamp) for Linux users, to download and install.
 
-Make sure you know the location of the WAMP (LAMP) server because you will need to configure the server's document root in the next step (after cloning/downloading) the project folder. 
+Make sure you know the URL location of the WAMP (LAMP) server because you will need to configure the server's document root in the next step (after cloning/downloading) the project folder. 
 
 ### Clone "Messenger" 
-To contribute to this code, like any githup project, you need to clone this project. This clone/download button is at the top right corner of the project directory, colored green. 
+To contribute to this code, like any githup project, you need to clone this project. The clone/download button is at the top right corner of the project directory, colored green. 
 
-Make the "messenger" project folder the root-document of the Apache server by editing the following apache configuration files. 
+Next edit the following apache configuration files; `..\wamp64\bin\apache\apache2.4.27\conf\extra\httpd-vhosts.conf` and `..\wamp64\bin\apache\apache2.4.27\conf\httpd.conf`
 
-* #### `..\wamp64\bin\apache\apache2.4.27\conf\extra\httpd-vhosts.conf`
+* #### For `..\wamp64\bin\apache\apache2.4.27\conf\extra\httpd-vhosts.conf`
 	* Change the value of `DocumentRoot` variable to the current path location of the "messenger" directory. 
 	* Change the value of `Directory` variable to the current path location of the "messenger" directory. 
 	* Change the value of `ServerName`  to the IP address of your computer (or its Local Domain Name).
 
-* ### `..\wamp64\bin\apache\apache2.4.27\conf\httpd.conf`
+* ### For `..\wamp64\bin\apache\apache2.4.27\conf\httpd.conf`
 	* Change the value of `DocumentRoot` variable to the current path location of the "messenger" directory. 
 	* Change the value of `Directory` variable to the current path location of the "messenger" directory.
 	* Change the value of `ServerAlias` to the IP address of your computer (or its Local Domain Name).
