@@ -26,7 +26,7 @@ Note: that "wamp64", in the above URL, is the wamp server directory and apache2.
 
 ### Build the Database
 
-To build the database, import the database SQL script implemention into MYSQL Workbench (For Window users, if you have it installed) or PHP-MyAdmin and run it, Or just run the script on the command line to implement the database. 
+To build the database, import the database SQL script, `..\messenger\database\chatAppDB.sql`, implemention into MYSQL Workbench (For Window users, if you have it installed) or PHP-MyAdmin and run it, Or just run the script on the command line to implement the database. 
 
 ### Open HTTP and ChatServer ports
 
