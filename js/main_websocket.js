@@ -6,7 +6,7 @@
 		const CONTACT_MESSAGE = "contact_message";
 		const NETWORK_UNREACHABLE = "network_unreachable";
 		const CHECK_IN_USER = "check_in_user";
-		const SERVER_ADDR = 'ws://192.168.1.158:5555';
+		const SERVER_ADDR = 'ws://127.0.0.1:5555';
 
 		/*
 		*TODO: Authenticates users who connect to sockets. Whe the connection is first established send an automated message to the 

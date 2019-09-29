@@ -71,7 +71,7 @@
 					<a class="dropdown-item" href="#"> Preference </a>
 					<a class="dropdown-item" href="#"> Help </a>
 					<div role="seperator" class="dropdown-divider"></div>
-					<a class="dropdown-item"  href="#http://192.168.1.158" id="logout_menu"> Logout </a>
+					<a class="dropdown-item"  href="#http://127.0.0.1" id="logout_menu"> Logout </a>
 				</div> <!--dropdown menu ends --> 
 
 			</div> <!--Dropdown div Ends -->

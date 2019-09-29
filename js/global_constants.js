@@ -1,4 +1,4 @@
-const IP = "192.168.1.158";
+const IP = "127.0.0.1";
 const SERVER_PORT = "5555";
 const SERVER_ADDR = "ws://"+IP+":"+SERVER_PORT;
 

@@ -1,9 +1,9 @@
-
+#DROP DATABASE chatAppDB;
 CREATE DATABASE IF NOT EXISTS chatAppDB;
 USE chatAppDB;
 
 
-DROP TABLE IF exists users; 
+#DROP TABLE IF exists users; 
 
 # Create a user table to hold all ther users 
 CREATE TABLE IF NOT EXISTS users (
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS users (
 	password varchar(255) NOT NULL
     );
 
-DROP TABLE IF exists contacts; 
+#DROP TABLE IF exists contacts; 
 
 #create a contact table to husersold all the user's contacts. 
 CREATE TABLE IF NOT EXISTS contacts (
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS contacts (
 
 );
 
-#DROP TABLE message; 
+#DROP TABLE IF exists message; 
 
 #create a message table to hold message sent and receives 
 CREATE TABLE IF NOT EXISTS message (
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS message (
 
 );
 
-#DROP TABLE msg_receiver; 
+#DROP TABLE IF exists msg_receiver; 
 
 # This table will store a list of recievers of a message 
 CREATE TABLE IF NOT EXISTS msg_receiver (
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS msg_receiver (
  
 ); 
 
-DROP TABLE notification; 
+#DROP TABLE IF exists notification; 
 
 #This is a notification table to hold user's notifications 
 CREATE TABLE IF NOT EXISTS notification (
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS notification (
    ON UPDATE CASCADE
 );
 
-#DROP TABLE notice_receiver; 
+#DROP TABLE IF exists notice_receiver; 
 
 # This table will store a list of recievers of a message 
 CREATE TABLE IF NOT EXISTS notice_receiver (
@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS notice_receiver (
  ON UPDATE CASCADE #user_fk
 ); 
 
-#DROP TABLE user_group; 
+#DROP TABLE IF exists  user_group; 
 
 CREATE TABLE IF NOT EXISTS user_group (
 	groupName varchar(255) NOT NULL,
@@ -96,13 +96,13 @@ CREATE TABLE IF NOT EXISTS user_group (
     PRIMARY KEY(groupID)
 );
 
-#DROP TABLE group_member; 
+#DROP TABLE IF exists  group_member; 
 
 CREATE TABLE IF NOT EXISTS group_member(
-	groupID VARCHAR(255),
-    member INT NOT NULL,
+	groupID INT,
+    members INT NOT NULL,
     FOREIGN KEY (groupID) REFERENCES user_group(groupID),
-    FOREIGN KEY (member) REFERENCES users(userID)
+    FOREIGN KEY (members) REFERENCES users(userID)
 );
 
 #add sample data to users table 

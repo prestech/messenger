@@ -24,12 +24,12 @@ class Database
 
 		//try to connect to database, and return NULL if connection fails.
 		try{
-		  $conn = new \PDO( 'mysql:host=localhost;dbname=chatAppDB',"root", "" );
-		  #$conn = new \PDO( 'mysql:host=localhost;dbname=chatAppDB',"root","");
+		  $conn = new \PDO( 'mysql:host=DOCKER_MYSQL;dbname=chatAppDB',"root", "admin" );
+		  #$conn = new \PDO( 'mysql:host=127.0.0.1:3306;dbname=chatAppDB',"root","");
 		  $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
 		}catch(\PDOException $ex){
-			echo "Database connection failed".$ex->getMessage(); 
+			echo "Database connection failed".$ex; 
 			return NULL; 
 		}//try-catch ends 
 

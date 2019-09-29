@@ -8,7 +8,7 @@
 	define("DATA_MODEL" , "php/model/database.php");
 	define("USER_FOLDER" , "user/");
 
-	define("IP_ADDR" , "192.168.1.158");
+	define("IP_ADDR" , "127.0.0.1");
 
 	define("ONLINE_IMG" , "images/online.jpg");
 	define("OFFLINE_IMG" , "images/offline.png");
@@ -16,8 +16,6 @@
 	define("IDLE_IMG" , "images/idle.jpg");
 	
 	function echoRedirect($file_path){
-		echo "<meta http-equiv='refresh' content='0; url=http://192.168.1.158//$file_path' />";
+		echo "<meta http-equiv='refresh' content='0; url=http://127.0.0.1//$file_path' />";
 	}//echRedirect() Ends 
-
-
 ?>

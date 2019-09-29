@@ -9,7 +9,7 @@ class Message
 	private $sender;
 	private $recievers; 
 	private $sentTime;
-	private $
+	//private $
 	
 	function __construct()
 	{
