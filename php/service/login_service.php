@@ -56,7 +56,6 @@
 			 return true;
 
 			}//if Ends 
-
 			//var_dump($result);
 		}//if Ends 
 
@@ -68,13 +67,16 @@
 
  	//validate user 
 	$isValid = validateClientUser($username, $password);
-
+    
 	//if user is valid store username in the session and redirect user 
 	// to the account_setup.php script 
 	if($isValid == true){
+		echo "<script>console.log('Debug Objects: ".$isValid."' );</script>";
 		//redirect to script responsible for setting up account environment
 		echoRedirect( ACCOUNT_SERVICE );
 
-	}//if Ends 
+	}else{
+		echoRedirect( ACCOUNT_SERVICE );
+	}
 
 ?>

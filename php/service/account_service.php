@@ -3,9 +3,9 @@
 
 	session_start();
 
-    require $_SERVER['DOCUMENT_ROOT'].'php/vendor/autoload.php';
+    require $_SERVER['DOCUMENT_ROOT'].'/php/vendor/autoload.php';
     require $_SERVER['DOCUMENT_ROOT']."/global_functions.php";
-	require $_SERVER['DOCUMENT_ROOT'].DATA_MODEL;
+	require $_SERVER['DOCUMENT_ROOT']."/".DATA_MODEL;
 
 	use chatapp\model\Database; 
 

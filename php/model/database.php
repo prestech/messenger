@@ -24,7 +24,7 @@ class Database
 
 		//try to connect to database, and return NULL if connection fails.
 		try{
-		  $conn = new \PDO( 'mysql:host=DOCKER_MYSQL;dbname=chatAppDB',"root", "admin" );
+		  $conn = new \PDO( 'mysql:host=localhost:3306;dbname=chatAppDB',"username", "password" );
 		  #$conn = new \PDO( 'mysql:host=127.0.0.1:3306;dbname=chatAppDB',"root","");
 		  $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
